@@ -473,7 +473,7 @@ export default function App() {
 
         <div className="sidebar__footer">
           <span>Projet Expédition</span>
-          <small>Version 1.15.2</small>
+          <small>Version 1.15.5</small>
         </div>
       </aside>
 

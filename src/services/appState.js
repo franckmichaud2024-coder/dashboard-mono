@@ -2,6 +2,8 @@ import { supabase } from "./supabase";
 
 export const EXPEDITION_WORKSPACE = "expedition-main";
 
+// Tous les comptes autorisés d'Expédition Mono partagent le même état cloud.
+// L'identité de l'utilisateur sert aux droits d'accès, pas à séparer les données.
 export async function loadState(workspaceKey = EXPEDITION_WORKSPACE) {
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
   if (sessionError) throw sessionError;
@@ -10,8 +12,7 @@ export async function loadState(workspaceKey = EXPEDITION_WORKSPACE) {
 
   const { data, error } = await supabase
     .from("app_state")
-    .select("id, data, updated_at, workspace_key")
-    .eq("user_id", user.id)
+    .select("id, data, updated_at, workspace_key, user_id")
     .eq("workspace_key", workspaceKey)
     .maybeSingle();
 
@@ -28,7 +29,6 @@ export async function saveState(payload, workspaceKey = EXPEDITION_WORKSPACE) {
   const { data: existing, error: findError } = await supabase
     .from("app_state")
     .select("id")
-    .eq("user_id", user.id)
     .eq("workspace_key", workspaceKey)
     .maybeSingle();
 
@@ -50,18 +50,16 @@ export async function saveState(payload, workspaceKey = EXPEDITION_WORKSPACE) {
   return data;
 }
 
-export function subscribeToState(userId, onChange, workspaceKey = EXPEDITION_WORKSPACE) {
-  if (!userId) return () => {};
-
+export function subscribeToState(_userId, onChange, workspaceKey = EXPEDITION_WORKSPACE) {
   const channel = supabase
-    .channel(`app-state:${workspaceKey}:${userId}`)
+    .channel(`app-state:${workspaceKey}`)
     .on(
       "postgres_changes",
       {
         event: "*",
         schema: "public",
         table: "app_state",
-        filter: `user_id=eq.${userId}`,
+        filter: `workspace_key=eq.${workspaceKey}`,
       },
       (payload) => {
         const row = payload.new;
