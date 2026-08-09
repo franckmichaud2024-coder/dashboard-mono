@@ -46,9 +46,12 @@ export default function Parametres({ accessMode = "readonly", currentUserId = nu
     setMessage("");
     try {
       await updateUserRole(user.id, nextRole);
-      setUsers((items) => items.map((item) => (
-        item.id === user.id ? { ...item, role: nextRole } : item
-      )));
+      const refreshedUsers = await listUsers();
+      const refreshedUser = refreshedUsers.find((item) => item.id === user.id);
+      if (!refreshedUser || refreshedUser.role !== nextRole) {
+        throw new Error("Le rôle n’a pas été enregistré dans Supabase.");
+      }
+      setUsers(refreshedUsers);
       setMessage(`Rôle de ${user.email || "l’utilisateur"} modifié.`);
     } catch (err) {
       setError(err.message || "Impossible de modifier le rôle.");
@@ -74,7 +77,11 @@ export default function Parametres({ accessMode = "readonly", currentUserId = nu
     setMessage("");
     try {
       await deleteUser(user.id);
-      setUsers((items) => items.filter((item) => item.id !== user.id));
+      const refreshedUsers = await listUsers();
+      if (refreshedUsers.some((item) => item.id === user.id)) {
+        throw new Error("L’utilisateur existe encore dans Supabase après la suppression.");
+      }
+      setUsers(refreshedUsers);
       setMessage(`Utilisateur ${user.email || "sélectionné"} supprimé.`);
     } catch (err) {
       setError(err.message || "Impossible de supprimer l’utilisateur.");

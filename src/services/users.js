@@ -13,6 +13,7 @@ export async function updateUserRole(userId, role) {
     new_role: normalizedRole,
   });
   if (error) throw error;
+  if (data !== true) throw new Error("Supabase n’a pas confirmé la modification du rôle.");
   return data;
 }
 
@@ -21,5 +22,6 @@ export async function deleteUser(userId) {
     target_user_id: userId,
   });
   if (error) throw error;
+  if (data !== true) throw new Error("Supabase n’a pas confirmé la suppression de l’utilisateur.");
   return data;
 }
