@@ -63,7 +63,7 @@ button {
   height: 42px;
   place-items: center;
   border-radius: 12px;
-  background: #f97316;
+  background: #2563eb;
   font-size: 22px;
   font-weight: 800;
 }
@@ -109,7 +109,7 @@ button {
 }
 
 .nav-item--active {
-  background: #f97316;
+  background: #2563eb;
   color: #fff;
   font-weight: 700;
 }
@@ -332,7 +332,7 @@ button {
 }
 
 .summary-card svg {
-  color: #f97316;
+  color: #2563eb;
 }
 
 .summary-card span,
@@ -476,8 +476,8 @@ button {
 .editable-cell input:focus,
 .schedule-input:focus,
 .number-input:focus {
-  border-color: #fb923c;
-  background: #fff7ed;
+  border-color: #3b82f6;
+  background: #eff6ff;
 }
 
 .number-input {
@@ -551,13 +551,13 @@ button {
 
 .primary-button {
   padding: 0 16px;
-  border: 1px solid #f97316;
-  background: #f97316;
+  border: 1px solid #2563eb;
+  background: #2563eb;
   color: #fff;
 }
 
 .primary-button:hover {
-  background: #ea580c;
+  background: #1d4ed8;
 }
 
 .secondary-button {
@@ -770,8 +770,8 @@ button {
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-  border-color: #f97316;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .checkbox-field {
@@ -783,7 +783,7 @@ button {
 .checkbox-field input {
   width: 18px;
   height: 18px;
-  accent-color: #f97316;
+  accent-color: #2563eb;
 }
 
 .schedule-editor {
@@ -1374,10 +1374,10 @@ button {
   justify-content: space-between;
   margin-top: 10px;
   padding: 10px 12px;
-  border: 1px solid #fdba74;
+  border: 1px solid #93c5fd;
   border-radius: 9px;
-  background: #fff7ed;
-  color: #9a3412;
+  background: #eff6ff;
+  color: #1e40af;
 }
 
 .vacation-message button {
@@ -1545,7 +1545,7 @@ button {
 }
 
 .vacation-block.selected {
-  outline: 3px solid rgba(249, 115, 22, 0.45);
+  outline: 3px solid rgba(37, 99, 235, 0.45);
 }
 
 .resize-handle {
@@ -1577,9 +1577,9 @@ button {
   justify-content: space-between;
   gap: 14px;
   padding: 12px 16px;
-  border: 1px solid #fdba74;
+  border: 1px solid #93c5fd;
   border-radius: 12px;
-  background: #fff7ed;
+  background: #eff6ff;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
 }
 
@@ -1652,8 +1652,8 @@ button {
   top: -3px;
   height: 3px;
   border-radius: 999px;
-  background: #f97316;
-  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.18);
+  background: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
 }
 
 .nav-drag-handle {
@@ -1668,7 +1668,7 @@ button {
 }
 
 .nav-drag-handle--active {
-  color: #f97316;
+  color: #2563eb;
   opacity: 1;
 }
 
@@ -1733,7 +1733,7 @@ button {
 }
 
 .vacation-cell--clickable:hover {
-  box-shadow: inset 0 0 0 2px #f97316;
+  box-shadow: inset 0 0 0 2px #2563eb;
 }
 
 .vacation-cell--vacances,
@@ -1905,7 +1905,7 @@ button {
 
 .month-start-head,
 .month-start-cell {
-  border-left: 3px solid #f97316 !important;
+  border-left: 3px solid #2563eb !important;
 }
 
 .current-month-head:not(.weekend-head) {
@@ -2204,8 +2204,8 @@ button {
 .thaw-note-field textarea:focus,
 .thaw-thursday-box input:focus,
 .thaw-table input:focus {
-  border-color: #f97316;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .thaw-weight-field {
@@ -2215,7 +2215,7 @@ button {
 }
 
 .thaw-weight-field > svg {
-  color: #f97316;
+  color: #2563eb;
 }
 
 .thaw-weight-field > input {
@@ -2270,7 +2270,7 @@ button {
 
 .thaw-kpis article svg {
   grid-row: 1 / 3;
-  color: #f97316;
+  color: #2563eb;
 }
 
 .thaw-kpis article span {
@@ -2287,10 +2287,10 @@ button {
   gap: 7px;
   margin-top: 13px;
   padding: 10px 12px;
-  border: 1px solid #fed7aa;
+  border: 1px solid #bfdbfe;
   border-radius: 9px;
-  background: #fff7ed;
-  color: #9a3412;
+  background: #eff6ff;
+  color: #1e40af;
   font-size: 13px;
 }
 
@@ -2312,7 +2312,7 @@ button {
 }
 
 .thaw-week-header span {
-  color: #f97316;
+  color: #2563eb;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -2608,7 +2608,7 @@ button {
 
 .cases-trend-kpis svg {
   grid-row: 1 / 3;
-  color: #f97316;
+  color: #2563eb;
 }
 
 .cases-trend-kpis span {
@@ -2675,7 +2675,7 @@ button {
 
 .cases-trend-line {
   fill: none;
-  stroke: #f97316;
+  stroke: #2563eb;
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -2683,7 +2683,7 @@ button {
 
 .cases-trend-dot {
   fill: #fff;
-  stroke: #f97316;
+  stroke: #2563eb;
   stroke-width: 4;
 }
 
@@ -2897,9 +2897,9 @@ button {
 }
 
 .rice-table input:focus {
-  border-color: #f97316;
+  border-color: #2563eb;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .rice-date-cell {
@@ -3197,7 +3197,7 @@ button {
 }
 
 .julian-eyebrow {
-  color: #f97316;
+  color: #2563eb;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .08em;
@@ -3230,7 +3230,7 @@ button {
 }
 
 .julian-date-input svg {
-  color: #f97316;
+  color: #2563eb;
 }
 
 .julian-date-input input {
@@ -3292,16 +3292,16 @@ button {
 }
 
 .julian-result--primary {
-  border-color: #f0a76c;
-  background: #fff7ed;
+  border-color: #93c5fd;
+  background: #eff6ff;
 }
 
 .julian-result--primary svg {
-  color: #f97316;
+  color: #2563eb;
 }
 
 .julian-result--primary strong {
-  color: #c2410c;
+  color: #1d4ed8;
   font-size: 36px;
   letter-spacing: .04em;
 }
@@ -3311,10 +3311,10 @@ button {
   gap: 7px;
   margin-top: 18px;
   padding: 11px 13px;
-  border: 1px solid #fed7aa;
+  border: 1px solid #bfdbfe;
   border-radius: 9px;
-  background: #fff7ed;
-  color: #9a3412;
+  background: #eff6ff;
+  color: #1e40af;
   font-size: 12px;
 }
 
@@ -3375,7 +3375,7 @@ button {
   border-radius: 9px;
   font: inherit;
 }
-.login-card input:focus { outline: 2px solid #fdba74; border-color: #f97316; }
+.login-card input:focus { outline: 2px solid #93c5fd; border-color: #2563eb; }
 .login-card button {
   height: 46px;
   border: 0;
@@ -3399,7 +3399,7 @@ button {
   cursor: pointer;
   text-align: left;
 }
-.user-badge__logout:hover { color: #c2410c; }
+.user-badge__logout:hover { color: #1d4ed8; }
 
 /* Etat de synchronisation Supabase */
 .sync-status {
@@ -3675,8 +3675,8 @@ button {
 }
 
 .account-modal__body input:focus {
-  border-color: #f97316;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .account-modal__status {
@@ -3703,8 +3703,8 @@ button {
 }
 
 .account-modal__footer .account-modal__primary {
-  border-color: #f97316;
-  background: #f97316;
+  border-color: #2563eb;
+  background: #2563eb;
   color: #fff;
   font-weight: 800;
 }

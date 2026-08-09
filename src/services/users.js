@@ -1,11 +1,7 @@
 import { supabase } from "./supabase";
 
 export async function listUsers() {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("id,email,role,created_at")
-    .order("created_at", { ascending: true });
-
+  const { data, error } = await supabase.rpc("expedition_list_users");
   if (error) throw error;
   return data || [];
 }
