@@ -3346,8 +3346,9 @@ button {
 
 .login-page {
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
+  background-color: #eef7ff;
 }
 
 .auth-loading {
@@ -3379,7 +3380,7 @@ button {
   height: 46px;
   border: 0;
   border-radius: 9px;
-  background: #f97316;
+  background: #1d4ed8;
   color: #fff;
   font: inherit;
   font-weight: 800;
