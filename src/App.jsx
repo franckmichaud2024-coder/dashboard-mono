@@ -21,6 +21,7 @@ import {
   Snowflake,
   TrendingUp,
   Users,
+  UserPlus,
   Utensils,
   X,
 } from "lucide-react";
@@ -37,7 +38,7 @@ import RizSec from "./pages/RizSec";
 import JourJulien from "./pages/JourJulien";
 import Parametres from "./pages/Parametres";
 import Login from "./pages/Login";
-import { changePassword, getCurrentSession, onAuthStateChange, signOut } from "./services/auth";
+import { changePassword, createUserAccount, getCurrentSession, onAuthStateChange, signOut } from "./services/auth";
 import { loadState, saveState, subscribeToState } from "./services/appState";
 import {
   applyLocalSnapshot,
@@ -96,9 +97,13 @@ export default function App() {
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [passwordForm, setPasswordForm] = useState({ password: "", confirm: "" });
   const [passwordStatus, setPasswordStatus] = useState("");
-  const [accessMode, setAccessMode] = useState(() => localStorage.getItem("expedition-access-mode") || "creator");
+  const [accessMode, setAccessMode] = useState("creator");
   const [zoomLevel, setZoomLevel] = useState(() => Number(localStorage.getItem("expedition-zoom") || 100));
   const [mobileMode, setMobileMode] = useState(() => localStorage.getItem("expedition-mobile-mode") === "true");
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [userForm, setUserForm] = useState({ email: "", password: "", role: "readonly" });
+  const [userCreateStatus, setUserCreateStatus] = useState("");
+  const [userCreating, setUserCreating] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -126,8 +131,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("expedition-access-mode", accessMode);
-  }, [accessMode]);
+    const assignedRole = session?.user?.user_metadata?.role;
+    setAccessMode(assignedRole === "readonly" ? "readonly" : "creator");
+  }, [session?.user?.id, session?.user?.user_metadata?.role]);
 
   useEffect(() => {
     localStorage.setItem("expedition-zoom", String(zoomLevel));
@@ -327,6 +333,40 @@ export default function App() {
     }
   };
 
+  const handleCreateUser = async (event) => {
+    event.preventDefault();
+    setUserCreateStatus("");
+
+    if (!userForm.email.trim()) {
+      setUserCreateStatus("Entrez une adresse courriel.");
+      return;
+    }
+    if (userForm.password.length < 6) {
+      setUserCreateStatus("Le mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+
+    setUserCreating(true);
+    try {
+      const data = await createUserAccount({
+        email: userForm.email.trim(),
+        password: userForm.password,
+        role: userForm.role,
+      });
+      const confirmationRequired = !data?.session;
+      setUserCreateStatus(
+        confirmationRequired
+          ? "Utilisateur créé. Une confirmation par courriel peut être requise avant la première connexion."
+          : "Utilisateur créé avec succès."
+      );
+      setUserForm({ email: "", password: "", role: "readonly" });
+    } catch (error) {
+      setUserCreateStatus(error.message || "Impossible de créer l’utilisateur.");
+    } finally {
+      setUserCreating(false);
+    }
+  };
+
   const blockReadOnlyInteraction = (event) => {
     if (accessMode !== "readonly") return;
     event.preventDefault();
@@ -432,7 +472,7 @@ export default function App() {
 
         <div className="sidebar__footer">
           <span>Projet Expédition</span>
-          <small>Version 1.14.0</small>
+          <small>Version 1.15.0</small>
         </div>
       </aside>
 
@@ -487,16 +527,23 @@ export default function App() {
                   <span>{syncStatus}</span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAccessMode((mode) => (mode === "creator" ? "readonly" : "creator"));
-                    setUserMenuOpen(false);
-                  }}
-                >
-                  {accessMode === "creator" ? <Eye size={17} /> : <Pencil size={17} />}
-                  {accessMode === "creator" ? "Passer en lecture seule" : "Passer en mode créateur"}
-                </button>
+                <div className="user-menu__role">
+                  {accessMode === "creator" ? <Pencil size={17} /> : <Eye size={17} />}
+                  <span>Mode : {accessMode === "creator" ? "Créateur" : "Lecture seule"}</span>
+                </div>
+
+                {accessMode === "creator" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUserModalOpen(true);
+                      setUserMenuOpen(false);
+                    }}
+                  >
+                    <UserPlus size={17} />
+                    Créer un nouvel utilisateur
+                  </button>
+                )}
 
                 <button
                   type="button"
@@ -601,6 +648,60 @@ export default function App() {
               <div className="account-modal__footer">
                 <button type="button" onClick={() => setPasswordModalOpen(false)}>Annuler</button>
                 <button type="submit" className="account-modal__primary">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {userModalOpen && accessMode === "creator" && (
+          <div className="account-modal-backdrop" onMouseDown={() => setUserModalOpen(false)}>
+            <form className="account-modal" onSubmit={handleCreateUser} onMouseDown={(event) => event.stopPropagation()}>
+              <div className="account-modal__header">
+                <div>
+                  <h2>Créer un utilisateur</h2>
+                  <p>Attribuez son accès à Expédition Mono.</p>
+                </div>
+                <button type="button" className="modal-close" onClick={() => setUserModalOpen(false)}>
+                  <X size={19} />
+                </button>
+              </div>
+              <div className="account-modal__body">
+                <label>
+                  Courriel
+                  <input
+                    type="email"
+                    value={userForm.email}
+                    onChange={(event) => setUserForm((current) => ({ ...current, email: event.target.value }))}
+                    required
+                  />
+                </label>
+                <label>
+                  Mot de passe temporaire
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={userForm.password}
+                    onChange={(event) => setUserForm((current) => ({ ...current, password: event.target.value }))}
+                    required
+                  />
+                </label>
+                <label>
+                  Rôle
+                  <select
+                    value={userForm.role}
+                    onChange={(event) => setUserForm((current) => ({ ...current, role: event.target.value }))}
+                  >
+                    <option value="creator">Créateur</option>
+                    <option value="readonly">Lecture seule</option>
+                  </select>
+                </label>
+                {userCreateStatus && <div className="account-modal__status">{userCreateStatus}</div>}
+              </div>
+              <div className="account-modal__footer">
+                <button type="button" onClick={() => setUserModalOpen(false)}>Annuler</button>
+                <button type="submit" className="account-modal__primary" disabled={userCreating}>
+                  {userCreating ? "Création…" : "Créer l’utilisateur"}
+                </button>
               </div>
             </form>
           </div>

@@ -3344,6 +3344,12 @@ button {
   color: #172033;
 }
 
+.login-page {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .auth-loading {
   font-weight: 800;
 }
@@ -3964,5 +3970,42 @@ button {
   .readonly-banner {
     top: 74px;
     font-size: 11px;
+  }
+}
+
+
+/* Expedition Mono 1.15 - utilisateur, session courte et fond de connexion */
+.user-menu__role {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: #475569;
+  font-size: 13px;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.account-modal__body select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.account-modal__primary:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+@media (max-width: 760px) {
+  .login-page {
+    background-position: center center;
+    padding: 20px;
   }
 }

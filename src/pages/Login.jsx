@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signIn } from "../services/auth";
+import loginBackground from "../assets/expedition-login-background.png";
 
 export default function Login({ onLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function Login({ onLoggedIn }) {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-page" style={{ backgroundImage: `linear-gradient(rgba(248,250,252,.28), rgba(248,250,252,.28)), url(${loginBackground})` }}>
       <form className="login-card" onSubmit={handleSubmit}>
         <h1>Expédition Mono</h1>
         <p>Connexion</p>
