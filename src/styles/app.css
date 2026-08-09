@@ -4028,3 +4028,43 @@ button {
 .settings-users__error { margin:16px 20px; padding:12px; border-radius:8px; background:#fef2f2; color:#b91c1c; }
 .settings-users__empty { text-align:center !important; color:#64748b !important; padding:24px !important; }
 @media (max-width:760px) { .settings-users__header { align-items:flex-start; flex-direction:column; } }
+
+/* Expédition Mono 1.15.4 — actions de gestion des utilisateurs */
+.settings-users__success {
+  margin: 16px 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  font-size: 13px;
+  font-weight: 600;
+}
+.settings-users__role-select {
+  min-width: 132px;
+  padding: 7px 30px 7px 10px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+.settings-users__role-select:disabled { opacity: .6; cursor: wait; }
+.settings-users__delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #fecaca;
+  background: #fff;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+.settings-users__delete:hover:not(:disabled) { background: #fef2f2; }
+.settings-users__delete:disabled { opacity: .55; cursor: wait; }
+.settings-users__protected { color: #64748b; font-size: 12px; font-weight: 600; }
