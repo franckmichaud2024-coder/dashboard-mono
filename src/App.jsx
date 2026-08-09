@@ -34,6 +34,7 @@ import {
   applyLocalSnapshot,
   notifyLocalStateChange,
   onLocalStateChange,
+  onRemoteStateApplied,
   readLocalSnapshot,
 } from "./services/stateBridge";
 
@@ -81,6 +82,7 @@ export default function App() {
   const [draggedId, setDraggedId] = useState(null);
   const [dragOverId, setDragOverId] = useState(null);
   const [customizing, setCustomizing] = useState(false);
+  const [dataRevision, setDataRevision] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -164,17 +166,25 @@ export default function App() {
 
     initialize();
     const stopLocal = onLocalStateChange(scheduleSave);
+    const stopRemoteApplied = onRemoteStateApplied(({ keys } = {}) => {
+      if (Array.isArray(keys) && keys.length > 0) {
+        // Remonte uniquement le contenu de la page courante. On conserve la page
+        // active, le menu, le scroll global et les autres préférences d'interface.
+        setDataRevision((revision) => revision + 1);
+      }
+    });
     const stopRealtime = subscribeToState(session.user.id, (row) => {
       const remote = row?.data;
       if (!remote?.storage || remote?.meta?.clientId === clientId) return;
       applyLocalSnapshot(remote.storage);
-      window.location.reload();
+      setSyncStatus("Synchronisé");
     });
 
     return () => {
       active = false;
       window.clearTimeout(saveTimer);
       stopLocal?.();
+      stopRemoteApplied?.();
       stopRealtime?.();
     };
   }, [session?.user?.id]);
@@ -321,7 +331,7 @@ export default function App() {
 
         <div className="sidebar__footer">
           <span>Projet Expédition</span>
-          <small>Version 1.12.0</small>
+          <small>Version 1.13.0</small>
         </div>
       </aside>
 
@@ -369,7 +379,7 @@ export default function App() {
         </header>
 
         <main className="page-container">
-          <CurrentPage />
+          <CurrentPage key={`${current.id}:${dataRevision}`} />
         </main>
       </section>
     </div>
