@@ -4010,3 +4010,21 @@ button {
     padding: 20px;
   }
 }
+
+/* Expedition Mono 1.15.2 - liste des utilisateurs */
+.settings-users { margin-top: 28px; border: 1px solid #dbe3ee; border-radius: 12px; overflow: hidden; background: #fff; }
+.settings-users__header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; border-bottom:1px solid #e5eaf1; }
+.settings-users__header h3 { display:flex; align-items:center; gap:8px; margin:0 0 4px; font-size:18px; color:#0f2748; }
+.settings-users__header p { margin:0; color:#64748b; font-size:13px; }
+.settings-users__header button { display:flex; align-items:center; gap:7px; border:1px solid #cbd5e1; background:#fff; color:#0f2748; border-radius:8px; padding:9px 12px; cursor:pointer; }
+.settings-users__table-wrap { overflow-x:auto; }
+.settings-users__table { width:100%; border-collapse:collapse; min-width:520px; }
+.settings-users__table th, .settings-users__table td { padding:13px 18px; text-align:left; border-bottom:1px solid #edf1f5; }
+.settings-users__table th { background:#f8fafc; color:#475569; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+.settings-users__table td { color:#1e293b; font-size:14px; }
+.settings-users__you { margin-left:8px; padding:2px 7px; border-radius:999px; background:#dbeafe; color:#1d4ed8; font-size:11px; font-weight:700; }
+.settings-users__role { display:inline-block; padding:4px 9px; border-radius:999px; background:#eef2ff; color:#3730a3; font-weight:700; font-size:12px; }
+.settings-users__active { color:#15803d; font-weight:700; font-size:12px; }
+.settings-users__error { margin:16px 20px; padding:12px; border-radius:8px; background:#fef2f2; color:#b91c1c; }
+.settings-users__empty { text-align:center !important; color:#64748b !important; padding:24px !important; }
+@media (max-width:760px) { .settings-users__header { align-items:flex-start; flex-direction:column; } }

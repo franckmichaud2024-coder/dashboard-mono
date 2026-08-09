@@ -360,6 +360,7 @@ export default function App() {
           : "Utilisateur créé avec succès."
       );
       setUserForm({ email: "", password: "", role: "readonly" });
+      window.dispatchEvent(new Event("expedition-user-created"));
     } catch (error) {
       setUserCreateStatus(error.message || "Impossible de créer l’utilisateur.");
     } finally {
@@ -472,7 +473,7 @@ export default function App() {
 
         <div className="sidebar__footer">
           <span>Projet Expédition</span>
-          <small>Version 1.15.0</small>
+          <small>Version 1.15.2</small>
         </div>
       </aside>
 
@@ -607,7 +608,7 @@ export default function App() {
               Mode lecture seule — les données peuvent être consultées, mais pas modifiées.
             </div>
           )}
-          <CurrentPage key={`${current.id}:${dataRevision}`} />
+          <CurrentPage key={`${current.id}:${dataRevision}`} accessMode={accessMode} currentUserId={session.user?.id} />
         </main>
 
         {passwordModalOpen && (
