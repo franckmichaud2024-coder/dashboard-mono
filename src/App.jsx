@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   CalendarDays,
+  ChevronDown,
+  Eye,
+  KeyRound,
+  LogOut,
+  Minus,
+  Pencil,
+  Plus,
+  RefreshCcw,
+  Smartphone,
   ClipboardList,
   GripVertical,
   Hash,
@@ -28,7 +37,7 @@ import RizSec from "./pages/RizSec";
 import JourJulien from "./pages/JourJulien";
 import Parametres from "./pages/Parametres";
 import Login from "./pages/Login";
-import { getCurrentSession, onAuthStateChange, signOut } from "./services/auth";
+import { changePassword, getCurrentSession, onAuthStateChange, signOut } from "./services/auth";
 import { loadState, saveState, subscribeToState } from "./services/appState";
 import {
   applyLocalSnapshot,
@@ -83,6 +92,13 @@ export default function App() {
   const [dragOverId, setDragOverId] = useState(null);
   const [customizing, setCustomizing] = useState(false);
   const [dataRevision, setDataRevision] = useState(0);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ password: "", confirm: "" });
+  const [passwordStatus, setPasswordStatus] = useState("");
+  const [accessMode, setAccessMode] = useState(() => localStorage.getItem("expedition-access-mode") || "creator");
+  const [zoomLevel, setZoomLevel] = useState(() => Number(localStorage.getItem("expedition-zoom") || 100));
+  const [mobileMode, setMobileMode] = useState(() => localStorage.getItem("expedition-mobile-mode") === "true");
 
   useEffect(() => {
     let mounted = true;
@@ -110,6 +126,31 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    localStorage.setItem("expedition-access-mode", accessMode);
+  }, [accessMode]);
+
+  useEffect(() => {
+    localStorage.setItem("expedition-zoom", String(zoomLevel));
+  }, [zoomLevel]);
+
+  useEffect(() => {
+    localStorage.setItem("expedition-mobile-mode", String(mobileMode));
+    if (mobileMode) {
+      setSidebarOpen(false);
+      setZoomLevel(100);
+    }
+  }, [mobileMode]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 760) setSidebarOpen(false);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     if (!session?.user?.id) {
       setCloudLoading(false);
       return undefined;
@@ -122,7 +163,7 @@ export default function App() {
     sessionStorage.setItem("expedition-client-id", clientId);
 
     const persist = async () => {
-      if (!active) return;
+      if (!active || accessMode === "readonly") return;
       setSyncStatus("Sauvegarde…");
       try {
         await saveState({
@@ -138,7 +179,7 @@ export default function App() {
     };
 
     const scheduleSave = () => {
-      if (!active || !initialized) return;
+      if (!active || !initialized || accessMode === "readonly") return;
       window.clearTimeout(saveTimer);
       saveTimer = window.setTimeout(persist, 650);
     };
@@ -187,7 +228,7 @@ export default function App() {
       stopRemoteApplied?.();
       stopRealtime?.();
     };
-  }, [session?.user?.id]);
+  }, [session?.user?.id, accessMode]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -256,6 +297,42 @@ export default function App() {
     localStorage.removeItem(NAV_STORAGE_KEY);
   };
 
+  const changeZoom = (delta) => {
+    setZoomLevel((value) => Math.max(70, Math.min(130, value + delta)));
+  };
+
+  const resetZoom = () => setZoomLevel(100);
+
+  const handlePasswordChange = async (event) => {
+    event.preventDefault();
+    setPasswordStatus("");
+    if (passwordForm.password.length < 6) {
+      setPasswordStatus("Le mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+    if (passwordForm.password !== passwordForm.confirm) {
+      setPasswordStatus("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
+    try {
+      await changePassword(passwordForm.password);
+      setPasswordStatus("Mot de passe modifié.");
+      setPasswordForm({ password: "", confirm: "" });
+      window.setTimeout(() => {
+        setPasswordModalOpen(false);
+        setPasswordStatus("");
+      }, 900);
+    } catch (error) {
+      setPasswordStatus(error.message || "Impossible de modifier le mot de passe.");
+    }
+  };
+
+  const blockReadOnlyInteraction = (event) => {
+    if (accessMode !== "readonly") return;
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   if (authLoading || (session && cloudLoading)) {
     return <div className="auth-loading">Chargement sécurisé des données…</div>;
   }
@@ -268,7 +345,10 @@ export default function App() {
   const initials = userEmail.slice(0, 2).toUpperCase();
 
   return (
-    <div className="app-shell">
+    <div
+      className={`app-shell ${mobileMode ? "app-shell--mobile" : ""} ${accessMode === "readonly" ? "app-shell--readonly" : ""}`}
+      style={{ zoom: `${zoomLevel}%` }}
+    >
       <aside className={`sidebar ${sidebarOpen ? "sidebar--open" : "sidebar--closed"}`}>
         <div className="sidebar__brand">
           <div className="sidebar__logo">E</div>
@@ -319,9 +399,30 @@ export default function App() {
             {customizing ? "Terminer la personnalisation" : "Personnaliser le menu"}
           </button>
 
-          <button type="button" onClick={resetNavigation}>
+          <button type="button" onClick={resetNavigation} disabled={accessMode === "readonly"}>
             <RotateCcw size={15} />
             Réinitialiser l’ordre
+          </button>
+
+          <div className="sidebar-zoom" aria-label="Zoom de l'application">
+            <button type="button" onClick={() => changeZoom(-10)} title="Réduire le zoom">
+              <Minus size={14} />
+            </button>
+            <button type="button" className="sidebar-zoom__value" onClick={resetZoom} title="Réinitialiser le zoom">
+              {zoomLevel}%
+            </button>
+            <button type="button" onClick={() => changeZoom(10)} title="Augmenter le zoom">
+              <Plus size={14} />
+            </button>
+          </div>
+
+          <button
+            type="button"
+            className={mobileMode ? "active" : ""}
+            onClick={() => setMobileMode((value) => !value)}
+          >
+            <Smartphone size={15} />
+            {mobileMode ? "Quitter le mode Samsung" : "Mode cellulaire Samsung"}
           </button>
 
           <small>
@@ -331,7 +432,7 @@ export default function App() {
 
         <div className="sidebar__footer">
           <span>Projet Expédition</span>
-          <small>Version 1.13.0</small>
+          <small>Version 1.14.0</small>
         </div>
       </aside>
 
@@ -362,25 +463,148 @@ export default function App() {
             </div>
           </div>
 
-          <div className="user-badge">
-            <div className="user-badge__avatar">{initials}</div>
-            <div>
-              <strong>{userEmail}</strong>
-              <span className={`sync-status ${syncStatus === "Synchronisé" ? "sync-status--ok" : ""}`}>{syncStatus}</span>
-              <button
-                type="button"
-                className="user-badge__logout"
-                onClick={() => signOut().catch((error) => console.error("Déconnexion:", error))}
-              >
-                Déconnexion
-              </button>
-            </div>
+          <div className="user-menu-wrap">
+            <button
+              type="button"
+              className="user-badge user-badge--button"
+              onClick={() => setUserMenuOpen((value) => !value)}
+              aria-expanded={userMenuOpen}
+            >
+              <div className="user-badge__avatar">{initials}</div>
+              <div className="user-badge__content">
+                <strong>{userEmail}</strong>
+                <span className={`sync-status ${syncStatus === "Synchronisé" ? "sync-status--ok" : ""}`}>
+                  {syncStatus} · {accessMode === "creator" ? "Créateur" : "Lecture seule"}
+                </span>
+              </div>
+              <ChevronDown size={16} />
+            </button>
+
+            {userMenuOpen && (
+              <div className="user-menu">
+                <div className="user-menu__identity">
+                  <strong>{userEmail}</strong>
+                  <span>{syncStatus}</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAccessMode((mode) => (mode === "creator" ? "readonly" : "creator"));
+                    setUserMenuOpen(false);
+                  }}
+                >
+                  {accessMode === "creator" ? <Eye size={17} /> : <Pencil size={17} />}
+                  {accessMode === "creator" ? "Passer en lecture seule" : "Passer en mode créateur"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPasswordModalOpen(true);
+                    setUserMenuOpen(false);
+                  }}
+                >
+                  <KeyRound size={17} />
+                  Modifier le mot de passe
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMode((value) => !value);
+                    setUserMenuOpen(false);
+                  }}
+                >
+                  <Smartphone size={17} />
+                  {mobileMode ? "Affichage bureau" : "Affichage Samsung"}
+                </button>
+
+                <div className="user-menu__zoom">
+                  <button type="button" onClick={() => changeZoom(-10)} aria-label="Zoom moins">
+                    <Minus size={15} />
+                  </button>
+                  <span>Zoom {zoomLevel}%</span>
+                  <button type="button" onClick={() => changeZoom(10)} aria-label="Zoom plus">
+                    <Plus size={15} />
+                  </button>
+                  <button type="button" onClick={resetZoom} aria-label="Réinitialiser le zoom">
+                    <RefreshCcw size={14} />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="user-menu__danger"
+                  onClick={() => signOut().catch((error) => console.error("Déconnexion:", error))}
+                >
+                  <LogOut size={17} />
+                  Changer d’utilisateur / Déconnexion
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
-        <main className="page-container">
+        <main
+          className={`page-container ${accessMode === "readonly" ? "page-container--readonly" : ""}`}
+          onClickCapture={blockReadOnlyInteraction}
+          onSubmitCapture={blockReadOnlyInteraction}
+          onKeyDownCapture={(event) => {
+            if (event.key !== "Tab") blockReadOnlyInteraction(event);
+          }}
+        >
+          {accessMode === "readonly" && (
+            <div className="readonly-banner">
+              <Eye size={16} />
+              Mode lecture seule — les données peuvent être consultées, mais pas modifiées.
+            </div>
+          )}
           <CurrentPage key={`${current.id}:${dataRevision}`} />
         </main>
+
+        {passwordModalOpen && (
+          <div className="account-modal-backdrop" onMouseDown={() => setPasswordModalOpen(false)}>
+            <form className="account-modal" onSubmit={handlePasswordChange} onMouseDown={(event) => event.stopPropagation()}>
+              <div className="account-modal__header">
+                <div>
+                  <h2>Modifier le mot de passe</h2>
+                  <p>{userEmail}</p>
+                </div>
+                <button type="button" className="modal-close" onClick={() => setPasswordModalOpen(false)}>
+                  <X size={19} />
+                </button>
+              </div>
+              <div className="account-modal__body">
+                <label>
+                  Nouveau mot de passe
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={passwordForm.password}
+                    onChange={(event) => setPasswordForm((current) => ({ ...current, password: event.target.value }))}
+                    required
+                  />
+                </label>
+                <label>
+                  Confirmer le mot de passe
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={passwordForm.confirm}
+                    onChange={(event) => setPasswordForm((current) => ({ ...current, confirm: event.target.value }))}
+                    required
+                  />
+                </label>
+                {passwordStatus && <div className="account-modal__status">{passwordStatus}</div>}
+              </div>
+              <div className="account-modal__footer">
+                <button type="button" onClick={() => setPasswordModalOpen(false)}>Annuler</button>
+                <button type="submit" className="account-modal__primary">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        )}
       </section>
     </div>
   );

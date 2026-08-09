@@ -3403,3 +3403,566 @@ button {
   line-height: 1.2;
 }
 .sync-status--ok { color: #15803d; }
+
+
+/* =========================================================
+   Expedition Mono 1.14 - compte, zoom et affichage Samsung
+   ========================================================= */
+
+/* Le libellé "semaine" doit toujours rester entièrement visible. */
+.vacation-toolbar__period-group {
+  grid-template-columns: 240px 42px 170px 42px !important;
+  min-width: 526px !important;
+}
+
+.vacation-toolbar__period-group .view-switcher {
+  width: 240px !important;
+  min-width: 240px !important;
+}
+
+.vacation-toolbar__period-group .view-switcher button {
+  min-width: 80px;
+  padding: 0 12px;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+/* Menu utilisateur */
+.user-menu-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.user-badge--button {
+  min-width: 310px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-badge--button:hover,
+.user-badge--button[aria-expanded="true"] {
+  border-color: #dbe3ec;
+  background: #f8fafc;
+}
+
+.user-badge__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-badge__content strong {
+  max-width: 245px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 80;
+  width: 310px;
+  padding: 8px;
+  border: 1px solid #dbe3ec;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 55px rgba(15, 23, 42, 0.20);
+}
+
+.user-menu__identity {
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-menu__identity strong,
+.user-menu__identity span {
+  display: block;
+}
+
+.user-menu__identity strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu__identity span {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.user-menu > button {
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #0f172a;
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-menu > button:hover {
+  background: #f1f5f9;
+}
+
+.user-menu__danger {
+  margin-top: 5px;
+  border-top: 1px solid #e2e8f0 !important;
+  border-radius: 0 0 9px 9px !important;
+  color: #b91c1c !important;
+}
+
+.user-menu__zoom {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px 36px;
+  gap: 5px;
+  align-items: center;
+  margin: 6px 4px;
+  padding: 7px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.user-menu__zoom button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid #dbe3ec;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+}
+
+.user-menu__zoom span {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Zoom accessible aussi dans le bas de la barre latérale. */
+.sidebar-zoom {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  gap: 5px;
+  padding: 2px 10px;
+}
+
+.sidebar-zoom button {
+  display: grid !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  place-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  text-align: center !important;
+}
+
+.sidebar-zoom__value {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Lecture seule : la navigation reste libre, seule la zone métier est verrouillée. */
+.readonly-banner {
+  position: sticky;
+  top: 92px;
+  z-index: 18;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-shell--readonly .page-container input,
+.app-shell--readonly .page-container select,
+.app-shell--readonly .page-container textarea,
+.app-shell--readonly .page-container button {
+  cursor: not-allowed;
+}
+
+/* Fenêtre de modification du mot de passe */
+.account-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(2px);
+}
+
+.account-modal {
+  width: min(460px, 100%);
+  overflow: hidden;
+  border: 1px solid #dbe3ec;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 25px 80px rgba(15, 23, 42, 0.30);
+}
+
+.account-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.account-modal__header h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.account-modal__header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.account-modal__body {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.account-modal__body label {
+  display: grid;
+  gap: 6px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.account-modal__body input {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  outline: none;
+}
+
+.account-modal__body input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+.account-modal__status {
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 12px;
+}
+
+.account-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px 18px;
+}
+
+.account-modal__footer button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.account-modal__footer .account-modal__primary {
+  border-color: #f97316;
+  background: #f97316;
+  color: #fff;
+  font-weight: 800;
+}
+
+/* Affichage forcé "Cellulaire Samsung" : sert aussi à tester depuis un PC. */
+.app-shell--mobile .app-main {
+  margin-left: 0 !important;
+}
+
+.app-shell--mobile .sidebar {
+  width: min(86vw, 300px);
+  box-shadow: 16px 0 40px rgba(15, 23, 42, 0.28);
+}
+
+.app-shell--mobile .topbar {
+  min-height: 68px;
+  padding: 9px 12px;
+}
+
+.app-shell--mobile .topbar h1 {
+  max-width: 42vw;
+  overflow: hidden;
+  font-size: 19px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--mobile .topbar p {
+  font-size: 11px;
+}
+
+.app-shell--mobile .page-container {
+  padding: 10px;
+}
+
+.app-shell--mobile .user-badge--button {
+  min-width: 0;
+  padding: 4px;
+}
+
+.app-shell--mobile .user-badge__content {
+  display: none;
+}
+
+.app-shell--mobile .user-menu {
+  position: fixed;
+  top: 68px;
+  right: 8px;
+  width: min(330px, calc(100vw - 16px));
+}
+
+.app-shell--mobile .page-card {
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.app-shell--mobile .vacation-toolbar-card {
+  padding: 10px;
+}
+
+.app-shell--mobile .vacation-toolbar--sunkiss {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.app-shell--mobile .vacation-toolbar__period-group {
+  grid-template-columns: 1fr 42px 1fr 42px !important;
+  min-width: 0 !important;
+}
+
+.app-shell--mobile .vacation-toolbar__period-group .view-switcher {
+  grid-column: 1 / -1;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.app-shell--mobile .vacation-toolbar__period-group .view-switcher button {
+  min-width: 0;
+  padding: 0 8px;
+}
+
+.app-shell--mobile .vacation-toolbar__period-group .vacation-period-title {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.app-shell--mobile .vacation-toolbar__filters {
+  grid-template-columns: 1fr;
+}
+
+.app-shell--mobile .vacation-toolbar__filters .search-field {
+  grid-column: auto;
+}
+
+.app-shell--mobile .vacation-stats {
+  gap: 7px 14px;
+  flex-wrap: wrap;
+}
+
+.app-shell--mobile .vacation-grid-wrapper {
+  max-height: calc(100dvh - 315px);
+  border-radius: 9px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-shell--mobile .vacation-grid--hours .vacation-sticky--name,
+.app-shell--mobile .vacation-grid--hours .vacation-sticky--trade,
+.app-shell--mobile .vacation-grid--hours .vacation-sticky--team {
+  min-width: 135px !important;
+  max-width: 135px;
+}
+
+.app-shell--mobile .vacation-sticky--trade {
+  left: 135px;
+}
+
+.app-shell--mobile .vacation-sticky--team,
+.app-shell--mobile .vacation-grid--hours .vacation-sticky--team {
+  left: 270px;
+}
+
+/* Samsung / téléphones : activation responsive automatique. */
+@media (max-width: 760px) {
+  html,
+  body,
+  #root {
+    min-width: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app-main {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    width: min(86vw, 300px);
+  }
+
+  .topbar {
+    min-height: 68px;
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .topbar__left {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .topbar h1 {
+    max-width: 46vw;
+    overflow: hidden;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar p {
+    display: none;
+  }
+
+  .icon-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .user-badge--button {
+    min-width: 0;
+    padding: 3px;
+  }
+
+  .user-badge__content {
+    display: none !important;
+  }
+
+  .user-badge__avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .user-menu {
+    position: fixed;
+    top: 66px;
+    right: 8px;
+    left: 8px;
+    width: auto;
+  }
+
+  .page-container {
+    padding: 8px;
+  }
+
+  .page-card {
+    padding: 10px;
+  }
+
+  .vacation-toolbar__period-group {
+    grid-template-columns: 1fr 42px 1fr 42px !important;
+    min-width: 0 !important;
+  }
+
+  .vacation-toolbar__period-group .view-switcher {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .vacation-toolbar__period-group .view-switcher button {
+    min-width: 0;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .vacation-toolbar__period-group .vacation-period-title {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 13px;
+  }
+
+  .vacation-toolbar__filters {
+    grid-template-columns: 1fr !important;
+  }
+
+  .vacation-toolbar__filters .search-field {
+    grid-column: auto !important;
+  }
+
+  .vacation-stats {
+    align-items: flex-start;
+    gap: 6px 12px;
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+
+  .vacation-stats small {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .vacation-grid-wrapper {
+    max-height: calc(100dvh - 325px);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .vacation-grid--hours .vacation-sticky--name,
+  .vacation-grid--hours .vacation-sticky--trade,
+  .vacation-grid--hours .vacation-sticky--team {
+    min-width: 128px !important;
+    max-width: 128px;
+    font-size: 11px;
+  }
+
+  .vacation-sticky--trade {
+    left: 128px;
+  }
+
+  .vacation-sticky--team,
+  .vacation-grid--hours .vacation-sticky--team {
+    left: 256px;
+  }
+
+  .readonly-banner {
+    top: 74px;
+    font-size: 11px;
+  }
+}
